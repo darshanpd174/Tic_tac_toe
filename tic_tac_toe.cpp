@@ -34,7 +34,7 @@ bool isMovesLeft() {
 }
 
 int evaluate(char board[SIZE][SIZE]) {
-    // Check rows for a win
+    
     for (int row = 0; row < SIZE; row++) {
         if (board[row][0] == board[row][1] && board[row][1] == board[row][2]) {
             if (board[row][0] == computer_marker) {
@@ -45,7 +45,6 @@ int evaluate(char board[SIZE][SIZE]) {
         }
     }
 
-    // Check columns for a win
     for (int col = 0; col < SIZE; col++) {
         if (board[0][col] == board[1][col] && board[1][col] == board[2][col]) {
             if (board[0][col] == computer_marker) {
@@ -56,7 +55,6 @@ int evaluate(char board[SIZE][SIZE]) {
         }
     }
 
-    // Check diagonals for a win
     if (board[0][0] == board[1][1] && board[1][1] == board[2][2]) {
         if (board[0][0] == computer_marker) {
             return 10;
@@ -72,44 +70,36 @@ int evaluate(char board[SIZE][SIZE]) {
         }
     }
 
-    // No winner
     return 0;
 }
 
 int minimax(char board[SIZE][SIZE], int depth, bool isMax) {
     int score = evaluate(board);
 
-    // If Maximizer has won the game
     if (score == 10) {
         return score - depth;
     }
 
-    // If Minimizer has won the game
     if (score == -10) {
         return score + depth;
     }
 
-    // If there are no more moves and no winner, it's a tie
     if (!isMovesLeft()) {
         return 0;
     }
 
-    // If this is maximizer's move
     if (isMax) {
         int best = -1000;
 
-        // Traverse all cells
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                // Check if cell is empty
+                
                 if (board[i][j] == ' ') {
-                    // Make the move
+                  
                     board[i][j] = computer_marker;
 
-                    // Call minimax recursively and choose the maximum value
                     best = std::max(best, minimax(board, depth + 1, !isMax));
 
-                    // Undo the move
                     board[i][j] = ' ';
                 }
             }
@@ -118,18 +108,15 @@ int minimax(char board[SIZE][SIZE], int depth, bool isMax) {
     } else {
         int best = 1000;
 
-        // Traverse all cells
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                // Check if cell is empty
+               
                 if (board[i][j] == ' ') {
-                    // Make the move
+                 
                     board[i][j] = player_marker;
 
-                    // Call minimax recursively and choose the minimum value
                     best = std::min(best, minimax(board, depth + 1, !isMax));
 
-                    // Undo the move
                     board[i][j] = ' ';
                 }
             }
@@ -143,21 +130,17 @@ void computerMove() {
     int bestMoveRow = -1;
     int bestMoveCol = -1;
 
-    // Traverse all cells, evaluate minimax function for all empty cells
     for (int i = 0; i < SIZE; i++) {
         for (int j = 0; j < SIZE; j++) {
-            // Check if cell is empty
+            
             if (board[i][j] == ' ') {
-                // Make the move
+               
                 board[i][j] = computer_marker;
 
-                // Compute evaluation function for this move
                 int moveVal = minimax(board, 0, false);
 
-                // Undo the move
                 board[i][j] = ' ';
 
-                // If the value of the current move is more than the best value, update best
                 if (moveVal > bestVal) {
                     bestMoveRow = i;
                     bestMoveCol = j;
@@ -167,7 +150,6 @@ void computerMove() {
         }
     }
 
-    // Make the best move
     board[bestMoveRow][bestMoveCol] = computer_marker;
 }
 
@@ -187,7 +169,7 @@ void game() {
     while (player_won == 0 && isMovesLeft()) {
         drawBoard();
 
-        if (playerTurn) {  // Player's turn
+        if (playerTurn) { 
             int row, col;
             std::cout << "Enter row and column (0, 1, or 2): ";
             std::cin >> row >> col;
@@ -198,7 +180,7 @@ void game() {
             }
 
             playerTurn = false;
-        } else {  // Computer's turn
+        } else {  
             computerMove();
             playerTurn = true;
         }
@@ -218,13 +200,12 @@ void game() {
         std::cout << "It's a tie!\n";
     }
 
-    // Prompt to play again
     char playAgain;
     std::cout << "Do you want to play again? (y/n): ";
     std::cin >> playAgain;
 
     if (playAgain == 'y' || playAgain == 'Y') {
-        // Reset the game
+      
         for (int i = 0; i < SIZE; ++i) {
             for (int j = 0; j < SIZE; ++j) {
                 board[i][j] = ' ';
