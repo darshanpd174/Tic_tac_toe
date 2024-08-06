@@ -2,6 +2,8 @@
 #include <vector>
 #include <limits>
 
+using namespace std;
+
 const int SIZE = 3;
 char board[SIZE][SIZE] = { {' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '} };
 char player_marker = 'X';
@@ -11,15 +13,15 @@ int playerWins = 0;
 int computerWins = 0;
 
 void drawBoard() {
-    std::cout << "-------------\n";
+    cout << "-------------\n";
     for (int i = 0; i < SIZE; ++i) {
-        std::cout << "|";
+        cout << "|";
         for (int j = 0; j < SIZE; ++j) {
-            std::cout << " " << board[i][j] << " |";
+            cout << " " << board[i][j] << " |";
         }
-        std::cout << "\n-------------\n";
+        cout << "\n-------------\n";
     }
-    std::cout << "Wins: " + std::to_string(playerWins) + " Losses: " + std::to_string(computerWins) + "\n";
+    cout << "Wins: " + to_string(playerWins) + " Losses: " + to_string(computerWins) + "\n";
 }
 
 bool isMovesLeft() {
@@ -98,7 +100,7 @@ int minimax(char board[SIZE][SIZE], int depth, bool isMax) {
                   
                     board[i][j] = computer_marker;
 
-                    best = std::max(best, minimax(board, depth + 1, !isMax));
+                    best = max(best, minimax(board, depth + 1, !isMax));
 
                     board[i][j] = ' ';
                 }
@@ -115,7 +117,7 @@ int minimax(char board[SIZE][SIZE], int depth, bool isMax) {
                  
                     board[i][j] = player_marker;
 
-                    best = std::min(best, minimax(board, depth + 1, !isMax));
+                    best = min(best, minimax(board, depth + 1, !isMax));
 
                     board[i][j] = ' ';
                 }
@@ -171,12 +173,12 @@ void game() {
 
         if (playerTurn) { 
             int row, col;
-            std::cout << "Enter row and column (0, 1, or 2): ";
-            std::cin >> row >> col;
+            cout << "Enter row and column (0, 1, or 2): ";
+            cin >> row >> col;
 
             while (!placeMarker(row, col, player_marker)) {
-                std::cout << "Invalid move. Try again: ";
-                std::cin >> row >> col;
+                cout << "Invalid move. Try again: ";
+                cin >> row >> col;
             }
 
             playerTurn = false;
@@ -191,18 +193,18 @@ void game() {
     drawBoard();
 
     if (player_won == 10) {
-        std::cout << "Computer won! Better luck next time.\n";
+        cout << "Computer won! Better luck next time.\n";
         computerWins++;
     } else if (player_won == -10) {
-        std::cout << "You won! Congratulations!\n";
+        cout << "You won! Congratulations!\n";
         playerWins++;
     } else {
-        std::cout << "It's a tie!\n";
+        cout << "It's a tie!\n";
     }
 
     char playAgain;
-    std::cout << "Do you want to play again? (y/n): ";
-    std::cin >> playAgain;
+    cout << "Do you want to play again? (y/n): ";
+    cin >> playAgain;
 
     if (playAgain == 'y' || playAgain == 'Y') {
       
